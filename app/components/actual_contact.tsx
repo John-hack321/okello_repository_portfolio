@@ -53,7 +53,7 @@ function ActualContactSection() {
           <textarea
             id="message"
             placeholder="Write your message..."
-            rows="5"
+            rows={5}
             className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#00abf0]"
           ></textarea>
         </div>

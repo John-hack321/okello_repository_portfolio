@@ -1,6 +1,6 @@
 "use client";
 import { Poppins } from "next/font/google";
-import { DEFAULT_SANS_SERIF_FONT } from "next/dist/shared/lib/constants";
+
 import React from "react";
 import { Linkedin, LinkedinIcon } from "lucide-react";
 import { GithubIcon } from "lucide-react";
