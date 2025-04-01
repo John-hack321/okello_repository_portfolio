@@ -1,0 +1,29 @@
+.btn-box {
+    position: relative;
+    overflow: hidden;
+    padding: 12px 24px;
+    font-weight: bold;
+    color: #081b29;
+    background: #00abf0;
+    border: 2px solid #00abf0;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    z-index: 1;
+  }
+  
+  .btn-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: #081b29;
+    z-index: -1;
+    transition: width 0.5s ease-in-out;
+  }
+  
+  .btn-box:hover::before {
+    width: 100%;
+  }
+  
