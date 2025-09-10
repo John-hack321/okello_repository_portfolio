@@ -1,4 +1,3 @@
-"use client";
 import { Poppins } from "next/font/google";
 
 import React from "react";
@@ -6,6 +5,7 @@ import { Linkedin, LinkedinIcon } from "lucide-react";
 import { GithubIcon } from "lucide-react";
 import { FacebookIcon } from "lucide-react";
 import { TwitterIcon } from "lucide-react";
+import '../cssFiles/home.css';
 
 //import "../cssFiles/btn.css";
 
@@ -27,9 +27,8 @@ function HomeComp() {
 
   return (
     <div
-      className={`flex md:w-1/2 lg:w-1/2 pl-10 pr-10 pb-10 pt-2 sm:w-full  min-h-[500px] ${poppins.className}`}
-    >
-      <div className="bg-transparent p-4 flex ml-10 flex-col space-y-6">
+      className={`home-container flex md:w-full lg:w-full pl-10 pr-10 pb-10 pt-2 sm:w-full  min-h-[500px] ${poppins.className}`}>
+      <div className="text-content bg-transparent p-4 flex ml-10 flex-col space-y-6">
         <h1
           className={`text-6xl  font-bold mt-10 tracking-wide ${poppins.className} `}
         >
@@ -92,26 +91,12 @@ function HomeComp() {
           ))}
         </div>
       </div>
-      <div className=""></div>
+      <div className="image-container">
+        <img src="/videos/john.jpg" alt="John Otieno" className="profile-image" />
+        <div className="blue-overlay"></div>
+      </div>
     </div>
   );
 }
 
 export default HomeComp;
-
-{
-  /*
-     <a href="">
-            <FacebookIcon />
-          </a>
-          <a href="">
-            <GithubIcon />
-          </a>
-          <a href="">
-            <TwitterIcon />
-          </a>
-          <a href="">
-            <LinkedinIcon />
-          </a>
-  */
-}
