@@ -9,7 +9,7 @@ const Portfolio = () => {
       <div className="flex gap-3 p-2">
         <div className="portfolio-right">
           <div className="project-card">
-            <a href="#" target="_blank" rel="noopener noreferrer">
+            <a href="https://ultraviolette-gamers.vercel.app/" target="_blank" rel="noopener noreferrer">
               <img src="/images/exmple_proj.png" alt="Example Project" className="h-100 project-image" />
               <div className="overlay">
                 <div className="overlay-text">
