@@ -2,14 +2,16 @@
 
 import { useRef, useEffect } from 'react';
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { OrbitControls as OrbitControlsType } from 'three/addons/controls/OrbitControls.js';
 
 const FloatingCube = () => {
   const mountRef = useRef<HTMLDivElement>(null);
-  const controlsRef = useRef<OrbitControls | null>(null);
-  const animationRef = useRef<number>();
+  const controlsRef = useRef<OrbitControlsType | null>(null);
+  const animationRef = useRef<number | null>(null);
   const cubeRef = useRef<THREE.Mesh | null>(null);
   const isUserInteracting = useRef(false);
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const sceneRef = useRef<THREE.Scene | null>(null);
 
   useEffect(() => {
     if (!mountRef.current) return;
@@ -17,6 +19,7 @@ const FloatingCube = () => {
     // Create scene
     const scene = new THREE.Scene();
     scene.background = null;
+    sceneRef.current = scene;
 
     // Create camera
     const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
@@ -27,12 +30,14 @@ const FloatingCube = () => {
       antialias: true, 
       alpha: true 
     });
-    renderer.setSize(400, 400);
+    renderer.setSize(550, 550);
     renderer.setClearColor(0x000000, 0);
+    rendererRef.current = renderer;
     
-    // Add renderer to DOM
-    mountRef.current.innerHTML = '';
-    mountRef.current.appendChild(renderer.domElement);
+    if (mountRef.current) {
+      mountRef.current.innerHTML = '';
+      mountRef.current.appendChild(renderer.domElement);
+    }
 
     // Create cube with rounded edges
     const geometry = new THREE.BoxGeometry(3, 3, 3, 10, 10, 10);
@@ -77,41 +82,52 @@ const FloatingCube = () => {
     rimLight.position.set(-1, 1, -2);
     scene.add(rimLight);
 
-    // Add orbit controls for dragging
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.screenSpacePanning = false;
-    controls.maxPolarAngle = Math.PI; // Prevent flipping
-    controls.minDistance = 5; // Fixed distance
-    controls.maxDistance = 5; // Fixed distance - same as min to prevent zooming
-    controls.enableZoom = false; // Disable zooming
-    controls.enablePan = false; // Disable panning
-    controls.autoRotate = true;
-    controls.autoRotateSpeed = 1.5;
-    controlsRef.current = controls;
+    // Dynamically import OrbitControls
+    import('three/addons/controls/OrbitControls.js').then((module) => {
+      const OrbitControls = module.OrbitControls;
+      
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.05;
+      controls.screenSpacePanning = false;
+      controls.maxPolarAngle = Math.PI; // Prevent flipping
+      controls.minDistance = 5; // Fixed distance
+      controls.maxDistance = 5; // Fixed distance - same as min to prevent zooming
+      controls.enableZoom = false; // Disable zooming
+      controls.enablePan = false; // Disable panning
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 1.5;
+      controlsRef.current = controls;
+
+      // Track user interaction
+      const onStart = () => {
+        isUserInteracting.current = true;
+        if (controlsRef.current) {
+          controlsRef.current.autoRotate = false;
+        }
+      };
+
+      const onEnd = () => {
+        isUserInteracting.current = false;
+        if (controlsRef.current && !controlsRef.current.autoRotate) {
+          controlsRef.current.autoRotate = true;
+        }
+      };
+
+      // Add event listeners
+      controls.addEventListener('start', onStart);
+      controls.addEventListener('end', onEnd);
+
+      // Cleanup
+      return () => {
+        controls.removeEventListener('start', onStart);
+        controls.removeEventListener('end', onEnd);
+        controls.dispose();
+      };
+    });
     
     // Position camera for better view
     camera.position.z = 6;
-
-    // Track user interaction
-    const onStart = () => {
-      isUserInteracting.current = true;
-      controls.autoRotate = false;
-    };
-
-    const onEnd = () => {
-      isUserInteracting.current = false;
-      // Only re-enable auto-rotate after a delay if user isn't interacting
-      setTimeout(() => {
-        if (!isUserInteracting.current) {
-          controls.autoRotate = true;
-        }
-      }, 2000);
-    };
-
-    controls.addEventListener('start', onStart);
-    controls.addEventListener('end', onEnd);
 
     // Handle window resize
     const handleResize = () => {
@@ -129,43 +145,71 @@ const FloatingCube = () => {
     handleResize();
     
     // Animation loop
-    let time = 0;
     const animate = () => {
       animationRef.current = requestAnimationFrame(animate);
-      
-      // Update controls
-      controls.update();
-      time += 0.005;
-      
-      if (cubeRef.current) {
-        // Add subtle floating animation
-        cubeRef.current.position.y = Math.sin(time) * 0.1;
-        
-        // Auto-rotation when not interacting
-        if (!isUserInteracting.current && controls.autoRotate) {
-          cubeRef.current.rotation.y += 0.003;
-          // Subtle bobbing rotation
-          cubeRef.current.rotation.x = Math.sin(time * 0.5) * 0.05;
-          cubeRef.current.rotation.z = Math.cos(time * 0.3) * 0.03;
-        }
+
+      // Only proceed if we have all required references
+      if (!rendererRef.current || !sceneRef.current) return;
+
+      // Rotate cube when not being interacted with
+      if (cubeRef.current && !isUserInteracting.current) {
+        cubeRef.current.rotation.x += 0.002;
+        cubeRef.current.rotation.y += 0.004;
       }
-      
-      // Render scene
-      renderer.render(scene, camera);
+
+      // Update controls if they exist
+      if (controlsRef.current) {
+        controlsRef.current.update();
+      }
+
+      rendererRef.current.render(sceneRef.current, camera);
     };
     
     animate();
 
     // Cleanup
     return () => {
-      cancelAnimationFrame(animationRef.current!);
-      window.removeEventListener('resize', handleResize);
-      controls.removeEventListener('start', onStart);
-      controls.removeEventListener('end', onEnd);
-      controls.dispose();
-      if (mountRef.current) {
-        mountRef.current.innerHTML = '';
+      // Cancel animation frame
+      if (animationRef.current !== null) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
       }
+
+      // Clean up renderer
+      if (rendererRef.current && mountRef.current) {
+        if (mountRef.current.contains(rendererRef.current.domElement)) {
+          mountRef.current.removeChild(rendererRef.current.domElement);
+        }
+        rendererRef.current.dispose();
+        rendererRef.current = null;
+      }
+
+      // Clean up scene
+      if (sceneRef.current) {
+        // Dispose of all materials and geometries in the scene
+        sceneRef.current.traverse(object => {
+          if (object instanceof THREE.Mesh) {
+            if (object.geometry) object.geometry.dispose();
+            if (object.material) {
+              if (Array.isArray(object.material)) {
+                object.material.forEach(material => material.dispose());
+              } else {
+                object.material.dispose();
+              }
+            }
+          }
+        });
+        sceneRef.current = null;
+      }
+
+      // Clean up controls
+      if (controlsRef.current) {
+        controlsRef.current.dispose();
+        controlsRef.current = null;
+      }
+
+      // Remove event listeners
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
