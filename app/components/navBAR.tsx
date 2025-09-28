@@ -1,52 +1,100 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { poppins } from "./home";
 import { useRouter } from "next/navigation";
+import { Menu, X } from "lucide-react";
 
 function NavBar() {
   const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
   function handleAboutClick() {
     router.push("/about");
+    setIsMenuOpen(false);
   }
 
+  // Handle scroll effect for navbar
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 10;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [scrolled]);
+
+  const navLinks = [
+    { name: 'Home', href: '/', onClick: () => setIsMenuOpen(false) },
+    { name: 'About', href: '/about', onClick: handleAboutClick },
+    { name: 'Services', href: '#services_part', onClick: () => setIsMenuOpen(false) },
+    { name: 'Portfolio', href: '#portfolio', onClick: () => setIsMenuOpen(false) },
+    { name: 'Contact', href: '#contact_sec', onClick: () => setIsMenuOpen(false) },
+  ];
+
   return (
-    <div className="justify-between sticky items-center bg-transparent z-10 px-8 mt-0 py-4 flex">
-      <h1
-        className={` ${poppins.className} text-[40px] font-extrabold ml-50 mt-3 `}
-      >
-        john.
-      </h1>
-      <nav className="flex mt-3  mr-40 space-x-6 text-2xl">
-        <a
-          href="/"
-          className=" active:text-[#00abf0] text-[#ededed] hover:text-[#00abf0]  transition duration-500"
-        >
-          Home
-        </a>
-        <a
-          href="/about"
-          onClick={handleAboutClick}
-          className="ml-18 text-[#ededed] hover:text-[#00abf0] "
-        >
-          About
-        </a>
-        <a
-          href="#services_part"
-          className="ml-18 text-[#ededed] hover:text-[#00abf0]"
-        >
-          Services
-        </a>
-        <a href="" className="ml-18 text-[#ededed] hover:text-[#00abf0]">
-          Portforlio
-        </a>
-        <a
-          href="#contact_sec"
-          className="ml-18 text-[#ededed] hover:text-[#00abf0]"
-        >
-          Contact
-        </a>
-      </nav>
-    </div>
+    <header className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'bg-[#081b29]/90 backdrop-blur-sm' : 'bg-transparent'}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center py-4">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <h1 className={`${poppins.className} text-3xl md:text-4xl font-extrabold text-white`}>
+              john.
+            </h1>
+          </div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex space-x-8">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={link.onClick}
+                className="text-white hover:text-[#00abf0] px-3 py-2 text-lg font-medium transition-colors duration-300"
+              >
+                {link.name}
+              </a>
+            ))}
+          </nav>
+
+          {/* Mobile menu button */}
+          <div className="md:hidden">
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-white hover:text-[#00abf0] focus:outline-none"
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? (
+                <X className="h-8 w-8" />
+              ) : (
+                <Menu className="h-8 w-8" />
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile menu */}
+      {isMenuOpen && (
+        <div className="md:hidden bg-[#081b29]/95 backdrop-blur-sm">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={link.onClick}
+                className="block px-3 py-2 text-white hover:bg-[#00abf0]/10 hover:text-[#00abf0] rounded-md text-base font-medium"
+              >
+                {link.name}
+              </a>
+            ))}
+          </div>
+        </div>
+      )}
+    </header>
   );
 }
 

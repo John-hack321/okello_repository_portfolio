@@ -38,75 +38,73 @@ function HomeComp() {
   ];
 
   return (
-    <div
-      className={`home-container flex flex-col md:flex-row items-center justify-between w-full px-4 md:px-10 py-10 min-h-screen ${poppins.className}`}>
-      <div className="text-content bg-transparent p-4 flex flex-col space-y-6 w-full md:w-1/2">
-        <h1
-          className={`text-6xl  font-bold mt-10 tracking-wide ${poppins.className} `}
-        >
-          Hi , its{" "}
-          <span
-            className={`font-extrabold ${poppins.className} text-6xl text-[#00abf0]`}
-          >
-            John
-          </span>{" "}
-          here
-        </h1>
-        <h1
-          className={`font-extrabold tracking-wide text-5xl text-[#00abf0] ${poppins.className}`}
-        >
-          A Software Engineer
-        </h1>
-        <p className="tracking-wider font-extralight  text-2xl mt-2">
-          I'm a Software Engineer and tech enthusiast based in Nairobi, Kenya. I
-          love crafting sleek, functional applications and am passionate about
-          solving real-world problems through technology. My current projects
-          include an AI-powered medical assistant aimed at improving healthcare
-          diagnostics and tools to enhance e-commerce platforms in Kenya.
-          Whether it's designing seamless user interfaces or exploring the
-          future of cross-platform development, I enjoy working on ideas that
-          have impact.
-        </p>
-        <div className="mt-8 flex  gap-10 space-x-8">
-          <button className=" text-2xl group relative overflow-hidden py-3 px-6 font-bold text-[#081b29] bg-[#00abf0] border-2 border-[#00abf0] rounded-lg cursor-pointer z-10 hover:text-[#00abf0] transition-colors duration-500">
-            contact me
-            {/* This div acts as the ::before pseudo-element */}
-            <div className="absolute top-0 left-0 h-full w-0 bg-[#081b29] -z-10 group-hover:w-full transition-all duration-500 ease-in-out"></div>
-          </button>
-          <button
-            className={`rounded-md z-10 group relative overflow-hidden cursor-pointer text-[#00abf0] border-2 border-[#00abf0] px-12 font-bold ${poppins.className} py-3 text-center text-2xl hover:text-[#081b29] transition-colors duration-500`}
-          >
-            lets talk
-            <div className="absolute top-0 left-0 h-full w-0 bg-[#00abf0] -z-10 group-hover:w-full transition-all duration-500 ease-in-out"></div>
-          </button>
-        </div>
-        <div className=" ml-2 flex mt-10 pr-10 space-x-20">
-          {socialIcons.map((item, index) => (
-            <div
-              key={index}
-              className=" justify-center flex relative border-2 z-10 group overflow-hidden cursor-pointer hover:text-[#081b29] transition-colors duration-500  h-14 w-14 rounded-full items-center   p-4 border-[#00abf0] text-[#00abf0]"
-            >
-              <a
-                target="_blank"
-                href={
-                  item.name === "https://github.com/John-hack321"
-                    ? "https://github.com/John-hack321"
-                    : item.name === "linkedin"
-                    ? "https://www.linkedin.com/in/john-otieno-2a400327b"
-                    : "https://www.linkedin.com/in/john-otieno-2a400327b?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3Bl6K56EWUSgeQIQGVUafIZg%3D%3D"
-                }
-              >
-                {item.icon}
-              </a>
-              <div className="absolute top-0 left-0 h-full w-0 -z-10 bg-[#00abf0] group-hover:w-full transition-all duration-500 ease-in-out"></div>
+    <div className={`min-h-screen w-full overflow-hidden ${poppins.className}`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-16 xl:py-20">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 xl:gap-16">
+          {/* Text Content */}
+          <div className="w-full lg:w-1/2 space-y-6 lg:space-y-8">
+            <div className="space-y-2 md:space-y-4">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white">
+                Hi, it's <span className="text-[#00abf0]">John</span> here
+              </h1>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#00abf0]">
+                A Software Engineer
+              </h2>
             </div>
-          ))}
+            
+            <p className="text-base sm:text-lg md:text-xl text-gray-300 leading-relaxed">
+              I'm a Software Engineer and tech enthusiast based in Nairobi, Kenya. I love crafting sleek, 
+              functional applications and am passionate about solving real-world problems through technology. 
+              My current projects include an AI-powered medical assistant and tools to enhance e-commerce platforms.
+            </p>
+            
+            <div className="flex flex-wrap gap-4 pt-2">
+              <button 
+                className="relative overflow-hidden px-6 py-3 text-lg md:text-xl font-bold text-[#081b29] bg-[#00abf0] border-2 border-[#00abf0] rounded-lg 
+                          hover:text-[#00abf0] transition-all duration-500 group"
+              >
+                <span className="relative z-10">Contact Me</span>
+                <div className="absolute inset-0 bg-[#081b29] -z-10 w-0 group-hover:w-full transition-all duration-500 ease-in-out"></div>
+              </button>
+              
+              <button 
+                className={`relative overflow-hidden px-6 py-3 text-lg md:text-xl font-bold text-[#00abf0] border-2 border-[#00abf0] rounded-lg 
+                          hover:text-[#081b29] transition-all duration-500 group ${poppins.className}`}
+              >
+                <span className="relative z-10">Let's Talk</span>
+                <div className="absolute inset-0 bg-[#00abf0] -z-10 w-0 group-hover:w-full transition-all duration-500 ease-in-out"></div>
+              </button>
+            </div>
+            
+            <div className="flex flex-wrap gap-4 md:gap-6 pt-4">
+              {socialIcons.map((item, index) => (
+                <a
+                  key={index}
+                  href={
+                    item.name === "https://github.com/John-hack321"
+                      ? "https://github.com/John-hack321"
+                      : item.name === "linkedin"
+                      ? "https://www.linkedin.com/in/john-otieno-2a400327b"
+                      : "#"
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group relative flex items-center justify-center w-12 h-12 md:w-14 md:h-14 border-2 border-[#00abf0] rounded-full 
+                            text-[#00abf0] hover:text-[#081b29] transition-colors duration-300"
+                  aria-label={item.name}
+                >
+                  <span className="relative z-10">{item.icon}</span>
+                  <div className="absolute inset-0 bg-[#00abf0] rounded-full -z-10 w-0 group-hover:w-full transition-all duration-300"></div>
+                </a>
+              ))}
+            </div>
+          </div>
+          
+          {/* 3D Cube Container */}
+          <div className="w-full lg:w-1/2 h-[350px] sm:h-[450px] md:h-[550px] lg:h-[600px] relative">
+            <FloatingCube />
+          </div>
         </div>
-      </div>
-      
-      {/* 3D Cube Container */}
-      <div className="w-full md:w-1/2 h-[400px] md:h-[600px] relative">
-        <FloatingCube />
       </div>
     </div>
   );
