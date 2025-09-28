@@ -38,8 +38,8 @@ function HomeComp() {
   ];
 
   return (
-    <div className={`min-h-screen w-full overflow-hidden ${poppins.className}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12 lg:py-16 xl:py-20">
+    <div className={`w-full overflow-hidden ${poppins.className} relative`}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 md:pt-12 lg:pt-16 xl:pt-20 pb-8 md:pb-12 lg:pb-16 xl:pb-20">
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 xl:gap-16">
           {/* Text Content */}
           <div className="w-full lg:w-1/2 space-y-6 lg:space-y-8">
@@ -101,8 +101,14 @@ function HomeComp() {
           </div>
           
           {/* 3D Cube Container */}
-          <div className="w-full lg:w-1/2 h-[350px] sm:h-[450px] md:h-[550px] lg:h-[600px] relative">
-            <FloatingCube />
+          <div className="w-full lg:w-1/2 flex items-center justify-center pt-8 lg:pt-0">
+            <div className="w-full max-w-lg h-[400px] sm:h-[500px] lg:h-[550px] relative z-10">
+              <Suspense fallback={<div className="w-full h-full bg-[#00abf0]/10 rounded-lg animate-pulse flex items-center justify-center">
+                <span className="text-white">Loading 3D Scene...</span>
+              </div>}>
+                <FloatingCube />
+              </Suspense>
+            </div>
           </div>
         </div>
       </div>

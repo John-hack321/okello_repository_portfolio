@@ -31,10 +31,13 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#081b29] scroll-smooth">
       <NavBar />
-      <main>
+      <main className="relative">
         <HomeComp />
-        <div id="portfolio" className="pt-8 md:pt-12 lg:pt-16">
-          <Portfolio />
+        <div id="portfolio" className="relative z-10">
+          <div className="absolute top-0 left-0 w-full h-16 bg-gradient-to-b from-[#081b29] to-transparent -mt-16"></div>
+          <div className="relative z-20 bg-[#081b29] pt-12 md:pt-16 lg:pt-20">
+            <Portfolio />
+          </div>
         </div>
       </main>
     </div>

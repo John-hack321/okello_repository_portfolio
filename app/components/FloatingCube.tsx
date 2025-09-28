@@ -34,29 +34,48 @@ const FloatingCube = () => {
     mountRef.current.innerHTML = '';
     mountRef.current.appendChild(renderer.domElement);
 
-    // Create cube
-    const geometry = new THREE.BoxGeometry(2, 2, 2);
+    // Create cube with rounded edges
+    const geometry = new THREE.BoxGeometry(3, 3, 3, 10, 10, 10);
     const material = new THREE.MeshPhongMaterial({ 
       color: 0x00abf0,
       shininess: 100,
-      specular: 0x111111,
-      flatShading: true
+      specular: 0x222222,
+      flatShading: false,
+      transparent: true,
+      opacity: 0.95,
+      emissive: 0x00abf0,
+      emissiveIntensity: 0.1
     });
+    
+    // Add wireframe for better visibility
+    const wireframe = new THREE.LineSegments(
+      new THREE.EdgesGeometry(geometry),
+      new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.3 })
+    );
+    
     const cube = new THREE.Mesh(geometry, material);
+    cube.add(wireframe);
     scene.add(cube);
     cubeRef.current = cube;
 
     // Add lights
-    const ambientLight = new THREE.AmbientLight(0x404040);
+    const ambientLight = new THREE.AmbientLight(0x404040, 0.8);
     scene.add(ambientLight);
 
-    const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight1.position.set(1, 1, 1);
-    scene.add(directionalLight1);
+    // Main key light
+    const keyLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    keyLight.position.set(2, 3, 4);
+    scene.add(keyLight);
 
-    const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.5);
-    directionalLight2.position.set(-1, -1, -1);
-    scene.add(directionalLight2);
+    // Fill light
+    const fillLight = new THREE.DirectionalLight(0x88ccff, 0.6);
+    fillLight.position.set(-2, -1, -1);
+    scene.add(fillLight);
+
+    // Rim/back light
+    const rimLight = new THREE.DirectionalLight(0x00aaff, 0.8);
+    rimLight.position.set(-1, 1, -2);
+    scene.add(rimLight);
 
     // Add orbit controls for dragging
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -64,11 +83,16 @@ const FloatingCube = () => {
     controls.dampingFactor = 0.05;
     controls.screenSpacePanning = false;
     controls.maxPolarAngle = Math.PI; // Prevent flipping
-    controls.minDistance = 3;
-    controls.maxDistance = 10;
+    controls.minDistance = 5; // Fixed distance
+    controls.maxDistance = 5; // Fixed distance - same as min to prevent zooming
+    controls.enableZoom = false; // Disable zooming
+    controls.enablePan = false; // Disable panning
     controls.autoRotate = true;
     controls.autoRotateSpeed = 1.5;
     controlsRef.current = controls;
+    
+    // Position camera for better view
+    camera.position.z = 6;
 
     // Track user interaction
     const onStart = () => {
@@ -105,15 +129,25 @@ const FloatingCube = () => {
     handleResize();
     
     // Animation loop
+    let time = 0;
     const animate = () => {
       animationRef.current = requestAnimationFrame(animate);
       
       // Update controls
       controls.update();
+      time += 0.005;
       
-      // Smooth auto-rotation when not interacting
-      if (!isUserInteracting.current && controls.autoRotate) {
-        cube.rotation.y += 0.003; // Slow, smooth rotation
+      if (cubeRef.current) {
+        // Add subtle floating animation
+        cubeRef.current.position.y = Math.sin(time) * 0.1;
+        
+        // Auto-rotation when not interacting
+        if (!isUserInteracting.current && controls.autoRotate) {
+          cubeRef.current.rotation.y += 0.003;
+          // Subtle bobbing rotation
+          cubeRef.current.rotation.x = Math.sin(time * 0.5) * 0.05;
+          cubeRef.current.rotation.z = Math.cos(time * 0.3) * 0.03;
+        }
       }
       
       // Render scene
@@ -136,21 +170,26 @@ const FloatingCube = () => {
   }, []);
 
   return (
-    <div 
-      ref={mountRef} 
-      style={{ 
-        width: '100%', 
-        height: '400px',
-        backgroundColor: 'transparent',
-        cursor: 'grab'
-      }} 
-      onMouseDown={() => {
-        if (mountRef.current) mountRef.current.style.cursor = 'grabbing';
-      }}
-      onMouseUp={() => {
-        if (mountRef.current) mountRef.current.style.cursor = 'grab';
-      }}
-    />
+    <div className="w-full h-full flex items-center justify-center py-4">
+      <div 
+        ref={mountRef} 
+        style={{ 
+          width: '550px',
+          height: '550px',
+          maxWidth: '90vw',
+          maxHeight: '90vw',
+          backgroundColor: 'transparent',
+          cursor: 'grab',
+          margin: '0 auto',
+        }} 
+        onMouseDown={() => {
+          if (mountRef.current) mountRef.current.style.cursor = 'grabbing';
+        }}
+        onMouseUp={() => {
+          if (mountRef.current) mountRef.current.style.cursor = 'grab';
+        }}
+      />
+    </div>
   );
 };
 

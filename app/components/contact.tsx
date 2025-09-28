@@ -30,13 +30,13 @@ function ContactSection() {
   const contactInfo = [
     {
       icon: <Mail className="h-6 w-6 text-[#00abf0]" />,
-      text: "your.email@example.com",
-      url: "mailto:your.email@example.com"
+      text: "johtieno6@gmail.com",
+      url: "mailto:johtieno6@gmail.com"
     },
     {
       icon: <Phone className="h-6 w-6 text-[#00abf0]" />,
-      text: "+1 (555) 123-4567",
-      url: "tel:+15551234567"
+      text: "+254 724 027231",
+      url: "tel:+254724027231"
     },
     {
       icon: <MapPin className="h-6 w-6 text-[#00abf0]" />,

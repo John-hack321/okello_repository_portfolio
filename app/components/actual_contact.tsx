@@ -83,8 +83,16 @@ function ActualContactSection() {
         {/* Footer */}
         <footer className="mt-20 text-center">
           <div className="flex flex-col items-center space-y-2">
-            <p className="text-neutral-400 text-sm sm:text-base">
-              Built and designed with ❤️ by john_ke
+            <div className="flex flex-col items-center space-y-1">
+              <p className="text-neutral-300 text-sm sm:text-base">
+                Email: <a href="mailto:johtieno6@gmail.com" className="text-[#00abf0] hover:underline">johtieno6@gmail.com</a>
+              </p>
+              <p className="text-neutral-300 text-sm sm:text-base">
+                Phone: <a href="tel:+254724027231" className="text-[#00abf0] hover:underline">+254 724 027231</a>
+              </p>
+            </div>
+            <p className="text-neutral-400 text-xs sm:text-sm pt-4">
+              Built and designed with ❤️ by John Otieno
             </p>
             <p className="text-neutral-500 text-xs sm:text-sm">
               © {new Date().getFullYear()} All rights reserved
