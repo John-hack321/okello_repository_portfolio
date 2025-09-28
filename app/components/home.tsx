@@ -1,11 +1,23 @@
-import { Poppins } from "next/font/google";
+'use client';
 
-import React from "react";
+import { Poppins } from "next/font/google";
+import React, { Suspense } from "react";
 import { Linkedin, LinkedinIcon } from "lucide-react";
 import { GithubIcon } from "lucide-react";
 import { FacebookIcon } from "lucide-react";
 import { TwitterIcon } from "lucide-react";
+import dynamic from 'next/dynamic';
 import '../cssFiles/home.css';
+
+// Dynamically import the 3D component with no SSR
+const FloatingCube = dynamic(() => import('./FloatingCube'), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-full flex items-center justify-center bg-[#00abf0]/10 rounded-lg">
+      <div className="animate-pulse text-white">Loading 3D Scene...</div>
+    </div>
+  ),
+});
 
 //import "../cssFiles/btn.css";
 
@@ -27,8 +39,8 @@ function HomeComp() {
 
   return (
     <div
-      className={`home-container flex md:w-full lg:w-full pl-10 pr-10 pb-10 pt-2 sm:w-full  min-h-[500px] ${poppins.className}`}>
-      <div className="text-content bg-transparent p-4 flex ml-10 flex-col space-y-6">
+      className={`home-container flex flex-col md:flex-row items-center justify-between w-full px-4 md:px-10 py-10 min-h-screen ${poppins.className}`}>
+      <div className="text-content bg-transparent p-4 flex flex-col space-y-6 w-full md:w-1/2">
         <h1
           className={`text-6xl  font-bold mt-10 tracking-wide ${poppins.className} `}
         >
@@ -91,9 +103,10 @@ function HomeComp() {
           ))}
         </div>
       </div>
-      <div className="image-container">
-        <img src="/videos/john.jpg" alt="John Otieno" className="profile-image" />
-        <div className="blue-overlay"></div>
+      
+      {/* 3D Cube Container */}
+      <div className="w-full md:w-1/2 h-[400px] md:h-[600px] relative">
+        <FloatingCube />
       </div>
     </div>
   );
