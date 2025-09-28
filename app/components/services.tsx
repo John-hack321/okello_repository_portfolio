@@ -1,85 +1,99 @@
 "use client";
 import React from "react";
 import { poppins } from "./home";
-import { FaCube } from "react-icons/fa";
-import { FaCode } from "react-icons/fa";
-import { FaDatabase } from "react-icons/fa";
-import { FaDesktop } from "react-icons/fa";
-import { FaMobileAlt } from "react-icons/fa";
-import { FaGlobe } from "react-icons/fa";
+import { FaCube, FaCode, FaDatabase, FaDesktop, FaMobileAlt, FaGlobe } from "react-icons/fa";
+import Image from 'next/image';
 
 function Services() {
   const servicesIcons = [
     {
-      icon: <FaCube />,
+      icon: <FaCube className="text-2xl sm:text-3xl" />,
       name: "3D Design",
       text: "/web_images/3d design.png",
+      description: "Creating immersive 3D designs and visualizations that bring ideas to life with stunning realism."
     },
     {
-      icon: <FaCode />,
+      icon: <FaCode className="text-2xl sm:text-3xl" />,
       name: "Web Development",
       text: "/web_images/3dweb.png",
+      description: "Building responsive, performant, and accessible websites using modern web technologies."
     },
     {
-      icon: <FaDatabase />,
+      icon: <FaDatabase className="text-2xl sm:text-3xl" />,
       name: "Web Scraping",
       text: "/web_images/scraping.png",
+      description: "Extracting and processing web data at scale for analysis and business intelligence."
     },
     {
-      icon: <FaMobileAlt />,
-      name: "Desktop Applications",
+      icon: <FaDesktop className="text-2xl sm:text-3xl" />,
+      name: "Desktop Apps",
       text: "/web_images/desktop.png",
+      description: "Developing cross-platform desktop applications with Electron and other modern frameworks."
     },
     {
-      icon: <FaGlobe />,
-      name: "Crossplartform Applications",
+      icon: <FaGlobe className="text-2xl sm:text-3xl" />,
+      name: "Cross-platform",
       text: "/web_images/crosplartform.png",
+      description: "Creating applications that work seamlessly across multiple platforms and devices."
     },
     {
-      icon: <FaDesktop />,
-      name: "3D Website Development",
+      icon: <FaCode className="text-2xl sm:text-3xl" />,
+      name: "3D Web Dev",
       text: "/web_images/web.png",
+      description: "Building interactive 3D web experiences using Three.js and WebGL technologies."
     },
   ];
 
   return (
-    <div id="services_part" className="min-h-[800px] mb-300">
-      <div className=" mt-100">
-        <h1
-          className={` ml-12 font-extrabold text-[300px] ${poppins.className} text-[#00abf0] scroll-m-10`}
-        >
-          SERVICES
-        </h1>
-      </div>
-      <div className="mt-60 flex flex-wrap ">
-        {servicesIcons.map((service, index) => (
-          <div className="w-full lg:w-1/2 md:w-1/2 p-4" key={index}>
-            <div className="rounded-lg  p-10 shadow-2px">
-              <div className=" hover:shadow-[#00abf0] group relative cursor-pointer   duration-500 ease-in-out transition-transform  hover:translate-y-3 shadow-2xl rounded-lg  flex flex-col">
-                <div className="flex group-hover:ml-8 duration-1200 group-hover:mt-6 rounded-lg items-center">
-                  <div className="z-10 group-hover:text-[#081b29] group relative text-[#00abf0] transform-colors ease-in-out overflow-hidden duration-500 h-20 w-20 rounded-full items-center border-2 flex justify-center p-2 border-[#00abf0] text-2xl">
+    <section id="services" className="relative py-16 sm:py-24 lg:py-32 bg-[#081b29]/90">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Title Section */}
+        <div className="text-center mb-16 sm:mb-24">
+          <h2 className={`${poppins.className} text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-extrabold text-[#00abf0] mb-8 sm:mb-12 transition-transform duration-500 hover:translate-y-4`}>
+            SERVICES
+          </h2>
+          <p className={`${poppins.className} text-lg sm:text-xl md:text-2xl text-gray-300 max-w-4xl mx-auto`}>
+            I offer a range of services to help bring your digital ideas to life with cutting-edge technology.
+          </p>
+        </div>
+
+        {/* Services Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {servicesIcons.map((service, index) => (
+            <div 
+              key={index}
+              className="group relative bg-[#0a2e42] bg-opacity-50 backdrop-blur-sm rounded-xl overflow-hidden border border-[#00abf0]/20 hover:border-[#00abf0]/50 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-[#00abf0]/10"
+            >
+              <div className="p-6 sm:p-8">
+                <div className="flex items-center space-x-4 mb-6">
+                  <div className="h-14 w-14 sm:h-16 sm:w-16 rounded-full border-2 border-[#00abf0] flex items-center justify-center text-[#00abf0] group-hover:bg-[#00abf0] group-hover:text-[#081b29] transition-colors duration-300">
                     {service.icon}
-                    <div className="absolute top-0 left-0 h-full w-0 -z-10 bg-[#00abf0] group-hover:w-full transition-all duration-500 ease-in-out"></div>
                   </div>
-                  <h3
-                    className={`${poppins.className} text-[#00abf0] text-4xl ml-8 font-bold`}
-                  >
+                  <h3 className={`${poppins.className} text-xl sm:text-2xl font-bold text-[#00abf0]`}>
                     {service.name}
                   </h3>
                 </div>
-                <div className=" rounded-lg p-10">
-                  <img
-                    className="rounded-lg shadow-2xl h-100 opacity-50 "
+                
+                <div className="relative h-48 sm:h-56 w-full rounded-lg overflow-hidden mb-4">
+                  <Image
                     src={service.text}
-                    alt=""
+                    alt={service.name}
+                    fill
+                    className="object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-500"
+                    sizes="(max-width: 768px) 100vw, 50vw"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#081b29] to-transparent opacity-80 group-hover:opacity-60 transition-opacity duration-300"></div>
                 </div>
+                
+                <p className="text-gray-300 text-sm sm:text-base mt-4">
+                  {service.description}
+                </p>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 
