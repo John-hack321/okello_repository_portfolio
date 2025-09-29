@@ -72,21 +72,44 @@ function HomeComp() {
             </p>
             
             <div className="flex flex-wrap gap-4 pt-2">
-              <button 
+              {/* Contact Me Button - Links to Contact Section */}
+              <a 
+                href="/about#contact"
                 className="relative overflow-hidden px-6 py-3 text-lg md:text-xl font-bold text-[#081b29] bg-[#00abf0] border-2 border-[#00abf0] rounded-lg 
-                          hover:text-[#00abf0] transition-all duration-500 group"
+                          hover:bg-transparent hover:text-[#00abf0] transition-all duration-300 group inline-flex items-center"
               >
-                <span className="relative z-10">Contact Me</span>
-                <div className="absolute inset-0 bg-[#081b29] -z-10 w-0 group-hover:w-full transition-all duration-500 ease-in-out"></div>
-              </button>
+                <span className="relative z-10 flex items-center">
+                  Contact Me
+                  <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </span>
+              </a>
               
-              <button 
+              {/* Let's Talk Button - Links to Contact Form */}
+              <a 
+                href="/about#contact-form"
                 className={`relative overflow-hidden px-6 py-3 text-lg md:text-xl font-bold text-[#00abf0] border-2 border-[#00abf0] rounded-lg 
-                          hover:text-[#081b29] transition-all duration-500 group ${poppins.className}`}
+                          hover:bg-[#00abf0] hover:text-[#081b29] transition-all duration-300 group ${poppins.className} inline-flex items-center`}
               >
                 <span className="relative z-10">Let's Talk</span>
-                <div className="absolute inset-0 bg-[#00abf0] -z-10 w-0 group-hover:w-full transition-all duration-500 ease-in-out"></div>
-              </button>
+              </a>
+              
+              {/* Resume Button */}
+              <a
+                href="https://drive.google.com/file/d/1fcqvvAg7k5nU0Udb3UG9Bv6UzVOqJVY-/view?usp=sharing"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative overflow-hidden px-5 py-2.5 text-base font-medium text-white border border-white/50 rounded-lg 
+                          hover:bg-white/10 hover:border-white/80 transition-all duration-300 flex items-center group"
+              >
+                <span className="flex items-center">
+                  Resume
+                  <svg className="ml-1.5 w-4 h-4 group-hover:translate-y-0.5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                </span>
+              </a>
             </div>
             
             <div className="flex flex-wrap gap-4 md:gap-6 pt-4">

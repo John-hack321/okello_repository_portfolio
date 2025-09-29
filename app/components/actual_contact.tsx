@@ -1,9 +1,46 @@
 "use client";
-import React from "react";
+import React, { useRef, useState } from "react";
 import { poppins } from "./home";
-import { Send } from "lucide-react";
+import { Send, Loader2, CheckCircle2 } from "lucide-react";
+import emailjs from '@emailjs/browser';
 
 function ActualContactSection() {
+  const form = useRef<HTMLFormElement>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState('');
+
+  const sendEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!form.current) return;
+    
+    try {
+      setIsSubmitting(true);
+      setError('');
+      
+      await emailjs.sendForm(
+        'YOUR_SERVICE_ID', // Replace with your EmailJS service ID
+        'YOUR_TEMPLATE_ID', // Replace with your EmailJS template ID
+        form.current,
+        'YOUR_PUBLIC_KEY' // Replace with your EmailJS public key
+      );
+      
+      setIsSuccess(true);
+      form.current.reset();
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setIsSuccess(false);
+      }, 5000);
+      
+    } catch (error) {
+      console.error('Failed to send message:', error);
+      setError('Failed to send message. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <section className="relative bg-[#081b29] text-[#ededed] py-16 sm:py-20 lg:py-28">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -23,8 +60,12 @@ function ActualContactSection() {
         </div>
 
         {/* Contact Form */}
-        <div className="max-w-4xl mx-auto">
-          <form className="bg-[#0a2e42] bg-opacity-50 backdrop-blur-sm rounded-2xl p-6 sm:p-8 md:p-12 space-y-6 border border-[#00abf0]/20">
+        <div id="contact-form" className="max-w-4xl mx-auto">
+          <form 
+            ref={form}
+            onSubmit={sendEmail}
+            className="bg-[#0a2e42] bg-opacity-50 backdrop-blur-sm rounded-2xl p-6 sm:p-8 md:p-12 space-y-6 border border-[#00abf0]/20"
+          >
             {/* Name Field */}
             <div>
               <label htmlFor="name" className="block text-sm sm:text-base font-medium text-gray-300 mb-2">
@@ -33,9 +74,11 @@ function ActualContactSection() {
               <input
                 type="text"
                 id="name"
+                name="user_name"
                 placeholder="Enter your name"
                 className="w-full px-4 py-3 rounded-lg bg-[#081b29] border border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#00abf0] focus:border-transparent text-gray-200 placeholder-gray-500 transition-all duration-200"
                 required
+                disabled={isSubmitting}
               />
             </div>
 
@@ -47,9 +90,11 @@ function ActualContactSection() {
               <input
                 type="email"
                 id="email"
+                name="user_email"
                 placeholder="Enter your email"
                 className="w-full px-4 py-3 rounded-lg bg-[#081b29] border border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#00abf0] focus:border-transparent text-gray-200 placeholder-gray-500 transition-all duration-200"
                 required
+                disabled={isSubmitting}
               />
             </div>
 
@@ -60,22 +105,49 @@ function ActualContactSection() {
               </label>
               <textarea
                 id="message"
+                name="message"
                 placeholder="Write your message..."
                 rows={5}
                 className="w-full px-4 py-3 rounded-lg bg-[#081b29] border border-gray-700 focus:outline-none focus:ring-2 focus:ring-[#00abf0] focus:border-transparent text-gray-200 placeholder-gray-500 resize-y min-h-[150px] transition-all duration-200"
                 required
+                disabled={isSubmitting}
               ></textarea>
             </div>
 
             {/* Submit Button */}
-            <div className="pt-4">
+            <div className="pt-4 space-y-4">
               <button
                 type="submit"
-                className="group w-full sm:w-auto flex items-center justify-center gap-2 bg-[#00abf0] hover:bg-[#0088cc] text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-semibold text-base sm:text-lg transition-all duration-300 hover:shadow-lg hover:shadow-[#00abf0]/30"
+                disabled={isSubmitting}
+                className={`group w-full sm:w-auto flex items-center justify-center gap-2 ${
+                  isSuccess ? 'bg-green-600 hover:bg-green-700' : 'bg-[#00abf0] hover:bg-[#0088cc]'
+                } text-white px-6 py-3 sm:px-8 sm:py-4 rounded-lg font-semibold text-base sm:text-lg transition-all duration-300 hover:shadow-lg hover:shadow-[#00abf0]/30 disabled:opacity-70 disabled:cursor-not-allowed`}
               >
-                <span>Send Message</span>
-                <Send className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    <span>Sending...</span>
+                  </>
+                ) : isSuccess ? (
+                  <>
+                    <CheckCircle2 className="h-5 w-5" />
+                    <span>Message Sent!</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Send Message</span>
+                    <Send className="h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
+                  </>
+                )}
               </button>
+              {error && (
+                <p className="text-red-400 text-sm mt-2">{error}</p>
+              )}
+              {isSuccess && (
+                <p className="text-green-400 text-sm mt-2">
+                  Thank you for your message! I'll get back to you soon.
+                </p>
+              )}
             </div>
           </form>
         </div>

@@ -105,11 +105,11 @@ function About() {
         <Services />
       </main>
 
-      {/* Footer */}
-      <footer>
+      {/* Contact Section */}
+      <section id="contact" className="scroll-mt-20">
         <ContactSection />
         <ActualContact />
-      </footer>
+      </section>
     </div>
   );
 }
