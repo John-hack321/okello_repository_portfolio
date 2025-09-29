@@ -29,12 +29,25 @@ export const poppins = Poppins({
 function HomeComp() {
   const socialIcons = [
     {
-      icon: <LinkedinIcon />,
-      name: "https://www.linkedin.com/in/john-otieno-2a400327b",
+      icon: <LinkedinIcon className="text-2xl" />,
+      name: "LinkedIn",
+      url: "https://www.linkedin.com/in/john-otieno-2a400327b"
     },
-    { icon: <FacebookIcon />, name: "facebook" },
-    { icon: <GithubIcon />, name: "https://github.com/John-hack321" },
-    { icon: <TwitterIcon />, naem: "twitte" },
+    { 
+      icon: <FacebookIcon className="text-2xl" />, 
+      name: "Facebook",
+      url: "#"
+    },
+    { 
+      icon: <GithubIcon className="text-2xl" />, 
+      name: "GitHub",
+      url: "https://github.com/John-hack321" 
+    },
+    { 
+      icon: <TwitterIcon className="text-2xl" />, 
+      name: "Twitter",
+      url: "https://x.com/the20xdev" 
+    },
   ];
 
   return (
@@ -80,21 +93,14 @@ function HomeComp() {
               {socialIcons.map((item, index) => (
                 <a
                   key={index}
-                  href={
-                    item.name === "https://github.com/John-hack321"
-                      ? "https://github.com/John-hack321"
-                      : item.name === "linkedin"
-                      ? "https://www.linkedin.com/in/john-otieno-2a400327b"
-                      : "#"
-                  }
+                  href={item.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group relative flex items-center justify-center w-12 h-12 md:w-14 md:h-14 border-2 border-[#00abf0] rounded-full 
-                            text-[#00abf0] hover:text-[#081b29] transition-colors duration-300"
+                  className="group relative flex items-center justify-center w-14 h-14 rounded-full border-2 border-[#00abf0] 
+                            text-[#00abf0] hover:bg-[#00abf0] hover:text-[#081b29] transition-colors duration-300"
                   aria-label={item.name}
                 >
                   <span className="relative z-10">{item.icon}</span>
-                  <div className="absolute inset-0 bg-[#00abf0] rounded-full -z-10 w-0 group-hover:w-full transition-all duration-300"></div>
                 </a>
               ))}
             </div>

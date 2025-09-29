@@ -32,6 +32,7 @@ function NavBar() {
     { name: 'About', href: '/about', onClick: handleAboutClick },
     { name: 'Services', href: '#services_part', onClick: () => setIsMenuOpen(false) },
     { name: 'Portfolio', href: '#portfolio', onClick: () => setIsMenuOpen(false) },
+    { name: 'Blog', href: 'https://www.techwithjohn.dev/', onClick: () => setIsMenuOpen(false), external: true },
     { name: 'Contact', href: '#contact_sec', onClick: () => setIsMenuOpen(false) },
   ];
 
@@ -53,9 +54,14 @@ function NavBar() {
                 key={link.name}
                 href={link.href}
                 onClick={link.onClick}
+                target={link.external ? "_blank" : "_self"}
+                rel={link.external ? "noopener noreferrer" : ""}
                 className="text-white hover:text-[#00abf0] px-3 py-2 text-lg font-medium transition-colors duration-300"
               >
                 {link.name}
+                {link.external && (
+                  <span className="ml-1 text-xs text-[#00abf0]" aria-hidden="true">↗</span>
+                )}
               </a>
             ))}
           </nav>
@@ -86,9 +92,14 @@ function NavBar() {
                 key={link.name}
                 href={link.href}
                 onClick={link.onClick}
+                target={link.external ? "_blank" : "_self"}
+                rel={link.external ? "noopener noreferrer" : ""}
                 className="block px-3 py-2 text-white hover:bg-[#00abf0]/10 hover:text-[#00abf0] rounded-md text-base font-medium"
               >
                 {link.name}
+                {link.external && (
+                  <span className="ml-1 text-xs text-[#00abf0]" aria-hidden="true">↗</span>
+                )}
               </a>
             ))}
           </div>
